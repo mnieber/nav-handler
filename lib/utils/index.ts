@@ -1,0 +1,1 @@
+export { sortNavPages } from './sortNavPages';

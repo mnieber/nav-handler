@@ -1,0 +1,18 @@
+{
+  "name": "react-nav-handler",
+  "version": "0.1.0",
+  "description": "Decouple navigation requests from url changes",
+  "main": "index.js",
+  "repository": "https://github.com/mnieber/react-nav-handler.git",
+  "author": "Maarten Nieber",
+  "license": "MIT",
+  "types": "index.d.ts",
+  "prepublish": "tsc",
+  "peerDependencies": {
+    "@types/react": ">=16.9.52",
+    "react": ">=16.13.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
