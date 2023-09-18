@@ -28,7 +28,9 @@ will navigate to `/dashboard/help` or to `/editor/help`.
 
 ```tsx
 // navEvents.ts
-export const navToHelp = (): void => navHandler.getNavFn('navToHelp', navToHelp)();
+export const navToHelp = (): void => {
+  navHandler.getNavFn('navToHelp', navToHelp)();
+}
 
 // DashboardNavPage.tsx
 import { useInstallNavPage } from 'react-nav-handler';
@@ -38,7 +40,9 @@ export const DashboardNavPage = (props: { children }) => {
   useInstallNavPage(
     'DashboardNavPage',
     {
-      navToHelp: (() => { history.push('/dashboard/help'); }) as typeof navToHelp,
+      navToHelp: (() => {
+        history.push('/dashboard/help');
+      }) as typeof navToHelp,
     }
   );
   return <>{props.children}</>;
@@ -52,7 +56,9 @@ export const EditorNavPage = (props: { children }) => {
   useInstallNavPage(
     'EditorNavPage',
     {
-      navToHelp: (() => { history.push('/editor/help'); }) as typeof navToHelp,
+      navToHelp: (() => {
+        history.push('/editor/help');
+      }) as typeof navToHelp,
     }
   );
   return <>{props.children}</>;
@@ -88,3 +94,35 @@ export const HelpButton = () => {
   )
 }
 ```
+
+## More fine-grained control
+
+The proposed approach to navigation is unusual, because navigation happens based on the current url, but not on the caller.
+Specifically, if the caller is a React component, then it doesn't matter in which part of the rendering tree that
+component is located. This can be too coarse grained though. For example, imagine that we're on the url `/editor` and we're showing
+an `Editor` component that has a `HelpButton`. Following the previous example, when we press this button, we will navigate to
+`/editor/help`. However, the page may also have a `HelpButton` in the application frame that should always navigate
+to `/help`. To support such cases, you can add a `requesterId` in the call to `navToHelp`.
+
+```tsx
+// navEvents.ts
+export const navToHelp = (requesterId: string): void => {
+  navHandler.getNavFn('navToHelp', navToHelp)(requesterId);
+};
+
+// EditorNavPage.tsx
+export const EditorNavPage = (props: { children }) => {
+  useInstallNavPage('EditorNavPage', {
+    navToHelp: ((requesterId: string) => {
+      if (requesterId !== 'Editor') return false;
+      history.push('/editor/help');
+    }) as typeof navToHelp,
+  });
+  return <>{props.children}</>;
+};
+```
+
+What this communicates is that `EditorNavPage` will handle `navToHelp` requests from "Editor", but not from other requesters.
+When a navivation function returns `false` then `navHandler` will continue by passing the navigation request to the
+next navigation page. Of course, you must ensure that one of the mounted navigation pages processes the requests,
+or an error will be thrown.
