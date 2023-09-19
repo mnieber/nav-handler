@@ -1,7 +1,11 @@
+export { NavHandlersProvider } from './lib/components/NavHandlersProvider';
+export type { NavHandlerT } from './lib/components/NavHandlersProvider';
 export {
-  NavContextProvider,
-  useNavContext,
-} from './lib/components/NavContextProvider';
-export type { NavContextT } from './lib/components/NavContextProvider';
-export { getNavFn } from './lib/getNavFn';
-export { getOptions, setOptions } from './lib/options';
+  createNavFunction,
+  createNavTarget,
+  getBoundNavFunction,
+  stub,
+} from './lib/createNavFunction';
+export type { NavFunctionT, NavTargetT } from './lib/createNavFunction';
+export { useNavContext } from './lib/hooks/useNavContext';
+export type { NavContextT } from './lib/hooks/useNavContext';

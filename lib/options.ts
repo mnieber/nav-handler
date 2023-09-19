@@ -1,12 +1,6 @@
-export type OptionsT = {
-  matchPath: Function;
-  useRouteMatch: Function;
-};
+export type OptionsT = {};
 
-export const options: OptionsT = {
-  matchPath: () => undefined,
-  useRouteMatch: () => undefined,
-};
+export const options: OptionsT = {};
 
 export const getOptions = () => options;
 
