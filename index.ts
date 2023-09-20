@@ -1,11 +1,10 @@
+export type { NavContext, NavFunctionT, NavHandlerT } from './lib/NavContext';
+export { stubNavTarget } from './lib/NavTargetT';
+export type { NavTargetT } from './lib/NavTargetT';
+
 export { NavHandlersProvider } from './lib/components/NavHandlersProvider';
-export type { NavHandlerT } from './lib/components/NavHandlersProvider';
 export {
   createNavFunction,
-  createNavTarget,
   getBoundNavFunction,
-  stub,
 } from './lib/createNavFunction';
-export type { NavFunctionT, NavTargetT } from './lib/createNavFunction';
 export { useNavContext } from './lib/hooks/useNavContext';
-export type { NavContextT } from './lib/hooks/useNavContext';

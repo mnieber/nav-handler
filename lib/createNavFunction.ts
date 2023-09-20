@@ -1,16 +1,15 @@
-import { NavContextT } from './hooks/useNavContext';
+import { NavContext, type BoundNavFunctionT } from './NavContext';
 
-export type NavTargetT = {
-  url: string;
-  nav: () => void;
-};
-
-export type BoundNavFunctionT = (...args: any[]) => NavTargetT;
-export type NavFunctionT = (navContext: NavContextT) => BoundNavFunctionT;
-export type NavHandlerT = (navContext: NavContextT) => BoundNavFunctionT;
+export function createNavFunction<BoundNavFn extends BoundNavFunctionT>(
+  fnName: string,
+  boundNavFnStub: BoundNavFn
+) {
+  return (navContext: NavContext) =>
+    getBoundNavFunction(navContext, fnName) as BoundNavFn;
+}
 
 export const getBoundNavFunction = (
-  navContext: NavContextT,
+  navContext: NavContext,
   navFnName: string
 ) => {
   for (const handler of navContext.handlers) {
@@ -30,18 +29,4 @@ export const getBoundNavFunction = (
     `${navFnName} not found in navContext requested by ` +
       `${navContext.requesterId}. Handlers: ${handlerNamesStr}`
   );
-};
-
-export function createNavFunction<BoundNavFn extends BoundNavFunctionT>(
-  fnName: string,
-  boundNavFnStub: BoundNavFn
-) {
-  return (navContext: NavContextT) =>
-    getBoundNavFunction(navContext, fnName) as BoundNavFn;
-}
-
-export const stub = undefined as unknown as NavTargetT;
-
-export const createNavTarget = (url: string, ufn: Function): NavTargetT => {
-  return { url, nav: () => ufn(url) };
 };
