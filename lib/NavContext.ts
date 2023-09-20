@@ -2,8 +2,11 @@ import { type NavTargetT } from './NavTargetT';
 
 export type BoundNavFunctionT = (...args: any[]) => NavTargetT;
 export type NavFunctionT = (navContext: NavContext) => BoundNavFunctionT;
+export type UndefinedNavFunctionT = (navContext: NavContext) => undefined;
 
-export type NavFunctionTableT = { [key: string]: NavFunctionT };
+export type NavFunctionTableT = {
+  [key: string]: NavFunctionT | UndefinedNavFunctionT;
+};
 export type NavHandlerT = { id: string; navFunctionTable: NavFunctionTableT };
 
 export class NavContext {
