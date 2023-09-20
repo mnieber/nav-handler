@@ -1,11 +1,11 @@
 import { NavContext, type BoundNavFunctionT } from './NavContext';
 
 export function createNavFunction<BoundNavFn extends BoundNavFunctionT>(
-  fnName: string,
+  navFnName: string,
   boundNavFnStub: BoundNavFn
 ) {
   return (navContext: NavContext) =>
-    getBoundNavFunction(navContext, fnName) as BoundNavFn;
+    getBoundNavFunction(navContext, navFnName) as BoundNavFn;
 }
 
 export const getBoundNavFunction = (
